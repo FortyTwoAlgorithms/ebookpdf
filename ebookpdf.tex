@@ -1,0 +1,243 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     document d'exemple per observar               
+%     les característiques dels PDFs a l'ebook reader           
+%     Cervantes 2 de bq readers     
+%     autor: (C)2012 Joan Queralt Gil 
+%     basat en el llibre de The Project Gutenberg 
+%     EBook of 'Calculus Made Easy', by Silvanus Thompson 
+%     http://www.gutenberg.org/ebooks/33283
+%     llicència CC 2.0 by nc sa                     
+%     jqueralt a gmail.com                          
+%     cataLaTeX                                     
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Usem la potència del paquet scrartcl de KOMA-script
+\documentclass[fontsize=12pt,%
+               %paper=a4,%
+               %BCOR=12mm,% marge per relligar
+               DIV=calc,% deixem que Koma faci els càlculs corresponents
+               %twoside,%per defecte 1 cara
+               %pagesize,%
+               captions=tableheading,%
+               numbers=noenddot,%
+               parskip=full,%
+               % toc=graduated%
+               %toc=flat %índex amb ítems sense sagnar
+               ]{scrartcl}  
+% codificació
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[catalan]{babel}                   % patrons de separació de paraules 
+
+%%%%%%
+% codi tret del llibre Calculus Made Easy by Silvanus P. Thompson
+% al Projecte Gutemberg: http://www.gutenberg.org/ebooks/33283
+% permet triar el tipus de sortida pel PDF: per imprimir o per llegir en pantalla
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Interlude:  Set up PRINTING (default) or SCREEN VIEWING %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ForPrinting=true (default)           false
+% Asymmetric margins                   Symmetric margins
+% Black hyperlinks                     Blue hyperlinks
+% Start Preface, ToC, etc. recto       No blank verso pages
+%
+% Chapter-like ``Sections'' start both recto and verso in the scanned
+% book. This behavior has been retained.
+\usepackage{ifthen}
+\newboolean{ForPrinting}
+
+%% UNCOMMENT the next line for a PRINT-OPTIMIZED VERSION of the text %%
+%\setboolean{ForPrinting}{true} NO la descomentem perquè volem sortida en pantalla
+
+%% Initialize values to ForPrinting=false
+\newcommand{\Margins}{hmarginratio=1:1}     % Symmetric margins
+\newcommand{\HLinkColor}{blue}              % Hyperlink color
+\newcommand{\PDFPageLayout}{SinglePage}
+
+\usepackage{perpage}
+\usepackage{calc}
+
+\ifthenelse{\boolean{ForPrinting}}{%
+  \setlength{\paperwidth}{8.5in}%
+  \setlength{\paperheight}{11in}%
+  \usepackage[body={5in,7in},\Margins]{geometry}
+}{%
+\setlength{\paperwidth}{5.5in}%         modificada en .5 polzades
+ \setlength{\paperheight}{7.5in}%       modificada en .5 polzades
+ \raggedbottom
+ \usepackage[body={4.5in,6.5in},\Margins,includeheadfoot]{geometry} %cos modificat en .5 polzades perls marges
+}
+%%%%% Mides originals. No coincideixen amb les del Cervantes 2 de bq readers
+%  \setlength{\paperwidth}{6in}%
+%  \setlength{\paperheight}{8in}%
+%  \raggedbottom
+%  \usepackage[body={5in,7in},\Margins,includeheadfoot]{geometry}
+
+
+
+
+% tipus de lletra                                               
+\usepackage[scaled=.88]{beramono}             % Bera-Monospace
+\usepackage[scaled=.86]{berasans}             % Bera Sans-Serif
+\usepackage[osf]{mathpazo}                    % Palatino com a font per defecte
+\linespread{1.05}\selectfont                  % Palatino necessita més espai, aquí el 5%
+
+%gràfics
+\usepackage{eso-pic}                          % paquet per clavar imatges a pàgines
+\usepackage{graphicx}                         % paquet per incloure imatges
+\usepackage{color}                            % paquet per incloure colors
+\usepackage{xcolor}                           % paquet per incloure colors
+
+% paquets per taules
+\usepackage{booktabs,array}                   % Taules agradables
+\usepackage{ctable}  
+\usepackage{colortbl}
+
+\usepackage{lipsum}                % paquet per crear text de farciment
+\usepackage{lastpage}              % paquet per posar el número d ela darrera pàgina
+
+\usepackage{amsthm}                % paquet per millores matemàtiques, teoremes
+\newtheorem{meuteo}{Teorema}       % definició del teorema
+
+
+
+
+%%%%%%%%% paquet prettyref
+% crida al paquet
+\usepackage{prettyref}
+% les etiquetes cal que portin un codi inicial per definir què són: sec: per secció, etc.
+% definim els textos que apareixeran quan cridem a \prettyref:
+\newrefformat{eq}{Equació \ref{#1} de la pàgina \pageref{#1}}
+\newrefformat{lem}{Lema \ref{#1}}
+\newrefformat{teo}{Teorema \ref{#1} de la pàgina \pageref{#1}}
+%\newrefformat{cap}{Capítol \ref{#1}}
+\newrefformat{sec}{Secció \ref{#1}}
+\newrefformat{tau}{Taula \ref{#1} de la pàgina \pageref{#1}}
+\newrefformat{fig}{Figura \ref{#1} de la pàgina \pageref{#1}}
+
+
+% paquet pel formatatge de la pàgina: capçaleres i peus
+\usepackage{scrpage2}
+\clearscrheadfoot
+\setlength{\headheight}{25pt}              % espai extra per la imatge de la capçalera
+\pagestyle{scrheadings}
+\setkomafont{pageheadfoot}{\footnotesize}  % la mida dels números de pàgina a capçalera             
+\ohead[]{\thepage\ |\ \pageref{LastPage}}  % posem el número de pàgina i el total de pàgines a capçalera
+
+% paquet per la configuració electrònica del PDF resultant
+\definecolor{linkcolor}{rgb}{0,0,0.42}             % color de l'enllaç
+\usepackage{hyperref}                              % configuració d'hyperref per pdf
+  \hypersetup{%
+    pdfauthor={(c) 2012 Joan Queralt},%
+    pdftitle={PDFs a l'ebookreader},%
+    pdfsubject={Prova de les mides de la pàgina dels PDF per poder llegir-los a l'ebookreader},%
+    bookmarksopen=true, %finestreta de marcadors oberta quan s'obre el document
+    urlcolor=linkcolor,
+    citecolor=linkcolor,
+    linkcolor=linkcolor,
+    colorlinks=true,
+  pdfstartview=Fit,    % default value
+  pdfstartpage=1,      % default value
+  pdfpagemode=UseNone, % default value
+  bookmarks=true,      % default value
+  linktocpage=false,   % default value
+  pdfpagelayout=\PDFPageLayout,
+  pdfdisplaydoctitle,
+  bookmarksopenlevel=0,
+  }
+  
+\def\meuteoautorefname{Teorema} % li diem a \autoref què posar on trobi el teorema ``meuteo``
+  
+% paquet per gestionar les extensions microtipogràfiques: protrusió dels caràcters i expansió dels tipus
+\usepackage[stretch=10]{microtype}  
+
+%%%%%%%%%%%%%
+% Dades del document
+\author{Joan Queralt Gil}
+\title{PDFs a l'ebookreader}
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Primera secció}\label{sec:primera}
+\lipsum[1]
+
+Lorem ipsum \footnote{Text de la  nota al peu}
+
+\lipsum[2-3]
+
+\begin{meuteo}\label{teo:pitagores}
+ Teorema de Pitàgores: La suma dels quadrarts dels catets és igual al quadrat de la hipotenusa:
+ 
+ \[h^2 = c_1{^2} + c_2{^2} \]
+\end{meuteo}
+
+\lipsum[2-3]
+
+Vegi's la \prettyref{fig:qrcode}. La referència creuada s'ha creat amb el comandament:
+
+\verb+\prettyref{fig:qrcode}+ 
+
+I aqui amb:
+
+\verb+\autoref{fig:qrcode}+: vegeu la \autoref{fig:qrcode}.
+
+\section{Segona secció}\label{sec:segona}
+\lipsum[1-3]
+
+\begin{equation}\label{eq:segongrau}
+ x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}
+\end{equation}
+
+Anem a la \prettyref{sec:primera}. Aquesta referència creuada s'ha creat amb el comandament:
+
+\verb+\prettyref{sec:primera}+
+
+\lipsum[2-3]
+
+\section{Tercera secció}\label{sec:tercera}
+\lipsum[1-3]
+
+Vegi's el \prettyref{teo:pitagores}. Aquesta referència creuada s'ha creat amb el comandament:
+
+\verb+\prettyref{teo:pitagores}+
+
+I ara amb autoref: Vegi's el \autoref{teo:pitagores}. Aquesta referència creuada s'ha creat amb el comandament:
+
+\verb+ \autoref{teo:pitagores}+
+
+\lipsum[2-3]
+
+ \begin{table}[ht]
+  \centering
+  \begin{tabular}{llll}
+    \toprule
+    Tipus & Durada & gr/l & $K_c$ \\
+    \midrule
+    A & 10 h & 6.78 & 0.2345 \\
+    B & 15 h & 3.49 & 0.1987 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Exemple de taula}
+  \label{tau:durada}
+\end{table}
+
+\lipsum[2-4]
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[scale=0.5,keepaspectratio=true]{./qrplanet.png}
+ \label{fig:qrcode}
+ \caption{Codi QR}
+\end{figure}
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
